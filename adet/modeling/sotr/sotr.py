@@ -508,10 +508,10 @@ class SOTR(nn.Module):
 
         # get bbox from mask
         pred_boxes = torch.zeros(seg_masks.size(0), 4)
-        # for i in range(seg_masks.size(0)):
-        #    mask = seg_masks[i].squeeze()
-        #    ys, xs = torch.where(mask)
-        #    pred_boxes[i] = torch.tensor([xs.min(), ys.min(), xs.max(), ys.max()]).float()
+        for i in range(seg_masks.size(0)):
+            mask = seg_masks[i].squeeze()
+            ys, xs = torch.where(mask)
+            pred_boxes[i] = torch.tensor([xs.min(), ys.min(), xs.max(), ys.max()]).float()
         results.pred_boxes = Boxes(pred_boxes)
 
         return results
