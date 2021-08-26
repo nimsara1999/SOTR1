@@ -1,85 +1,49 @@
-# SOTR: Segmenting Objects with Transformers [ICCV 2021]
-By [Ruohao Guo](https://github.com/easton-cau), Dantong Niu, [Liao Qu](https://github.com/QuLiao1117), Zhenbo Li
+# SOTR: Segmenting Objects with Transformers 
 
-## Introduction
+[SOTR](https://github.com/easton-cau/SOTR) fork with [SOTR_inference.py](https://github.com/deepdrivepl/SOTR/blob/main/SOTR_inference.py) showing how to run inference on video input. 
 
-This is the official implementation of  [SOTR](https://arxiv.org/abs/2108.06747).
+![SOTR](images/sotr.jpeg)
 
-<img src="images/overview.png" alt="image" style="zoom:60%;" />
+More details can be found at [deepdrive.pl](https://deepdrive.pl/sotr-czyli-segmentacja-instancji-z-wykorzystaniem-transformera/)
 
-
-
-## Models
-
-### COCO Instance Segmentation Baselines with SOTR
-
-Name |  mask AP | AP<sub>S</sub> | AP<sub>M</sub> | AP<sub>L</sub> | download
-:-- |:---:|:---:|:---:|:---:|:---:
-[SOTR_R101](configs/SOTR/R101.yaml) | 40.2 | 10.2 | 59.0 | 73.1 | [model](https://drive.google.com/file/d/1CzQTsvn9vxLnFkDJpIlitFXu1X_vw1dZ/view?usp=sharing)
-[SOTR_R101_DCN](configs/SOTR/R_101_DCN.yaml) | 42.0 | 11.4 | 60.7 | 74.5| [model](https://drive.google.com/file/d/19Dy6sXrwaNwGwNvuQyv5pZMWGM_at0ym/view?usp=sharing) 
-
-## Installation & Quick start
-
-- First install Detectron2 following the official guide: [INSTALL.md](https://github.com/facebookresearch/detectron2/blob/master/INSTALL.md).
-
-
-- Then build SOTR with:
-
+## Install packages (cu10.2 + torch 1.9)
 
 ```
-https://github.com/easton-cau/SOTR
+conda create -n SOTR python=3.6
+conda activate SOTR
+pip install torch torchvision
+python -m pip install detectron2 -f   https://dl.fbaipublicfiles.com/detectron2/wheels/cu102/torch1.9/index.html
+pip install opencv-python gdown
+```
+
+## Clone
+
+```
+git clone https://github.com/deepdrivepl/SOTR.git
 cd SOTR
-python setup.py build develop
 ```
 
-- Then follow [datasets/README.md](https://github.com/facebookresearch/detectron2/blob/master/datasets/README.md)  to set up the datasets (e.g., MS-COCO).
-
-- Evaluating
-
-  - Download the trained models for COCO. 
-
-  - Run the following command
-
-    ```
-    python tools/train_net.py \
-        --config-file configs/SOTR/R101.yaml \
-        --eval-only \
-        --num-gpus 4 \
-        MODEL.WEIGHTS work_dir/SOTR_R101/SOTR_R101.pth
-    ```
-
-- Training
-
-  - Run the following command
-
-    ```
-    python tools/train_net.py \
-        --config-file configs/SOTR/R101.yaml \
-        --num-gpus 4 \
-    ```
-
-
-## Acknowledgement
-
-Thanks [Detectron2](https://github.com/facebookresearch/detectron2) and [AdelaiDet](https://github.com/aim-uofa/AdelaiDet) contribution to the community!
-
-The work is supported by National Key R&D Program of China (2020YFD0900204) and Key-Area Research and Development Program of Guangdong  Province China (2020B0202010009).
-
-## FAQ
-If you want to improve the usability or any piece of advice, please feel free to contant directly (ruohguo@foxmail.com).
-
-## Citation
-
-Please consider citing our paper in your publications if the project helps your research. BibTeX reference is as follow.
+## Download models & video
 
 ```
-@misc{guo2021sotr,
-      title={SOTR: Segmenting Objects with Transformers}, 
-      author={Ruohao Guo and Dantong Niu and Liao Qu and Zhenbo Li},
-      year={2021},
-      eprint={2108.06747},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
-}
+mkdir models
+gdown 'https://drive.google.com/u/0/uc?export=download&confirm=taWO&id=1CzQTsvn9vxLnFkDJpIlitFXu1X_vw1dZ' -O models/SOTR_R101.pth
+gdown 'https://drive.google.com/u/0/uc?id=19Dy6sXrwaNwGwNvuQyv5pZMWGM_at0ym&export=download' -O models/SOTR_R101_DCN.pth
+mkdir data && cd data
+wget https://archive.org/download/0002201705192/0002-20170519-2.mp4
 ```
+
+## Inference
+
+```
+python SOTR_inference.py --model_cfg configs/SOTR/R101.yaml --model_path models/SOTR_R101.pth --video_path data/0002-20170519-2.mp4 --out_dir data/results/SOTR_R101
+```
+
+## Run ffmpeg
+
+```
+ffmpeg -i data/results/SOTR_R101/img%08d.jpg data/results/SOTR_R101.mp4
+```
+
+## Results
 
