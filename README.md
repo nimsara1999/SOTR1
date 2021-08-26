@@ -47,3 +47,6 @@ ffmpeg -i data/results/SOTR_R101/img%08d.jpg data/results/SOTR_R101.mp4
 
 ## Results
 
+- [SOTR-R101](https://youtu.be/dcp7lSJ6dzk)
+- [SOTR-R101-DCN](https://youtu.be/xUMUvIBe9fE)
+
