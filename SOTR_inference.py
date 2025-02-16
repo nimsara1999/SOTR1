@@ -63,7 +63,8 @@ def main(video_path, out_dir, demo, model_name):
         predictions, visualized_output, inf_time = demo.run_on_image(frame)
         visualized_output = visualized_output.get_image()
         
-        txt="%s Inference: %dx%d  GPU: %s Inference time %.3fs" % (model_name,750,1333,torch.cuda.get_device_name(0), inf_time)
+        #txt="%s Inference: %dx%d  GPU: %s Inference time %.3fs" % (model_name,750,1333,torch.cuda.get_device_name(0), inf_time)
+        txt=" "
         cv2.putText(visualized_output,txt, (100,100), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,0,0),19)
         cv2.putText(visualized_output,txt, (100,100), cv2.FONT_HERSHEY_SIMPLEX, 2, (255,255,255),9)
 
