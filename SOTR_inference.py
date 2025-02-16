@@ -34,10 +34,10 @@ class Visualization(VisualizationDemo):
         if "instances" in predictions:
             instances = predictions["instances"].to(self.cpu_device)
             instances = instances[instances.scores >= self.score_threshold]
-            labels = [self.metadata.thing_classes[x] for x in instances.pred_classes]
+            #labels = [self.metadata.thing_classes[x] for x in instances.pred_classes]
             colors = [self.metadata.thing_colors[x] for x in instances.pred_classes]
             colors = [[x/255 for x in lst] for lst in colors]
-            vis_output = visualizer.overlay_instances(boxes=instances.pred_boxes, labels=labels, masks=instances.pred_masks, assigned_colors=colors, alpha=0.3)
+            vis_output = visualizer.overlay_instances(boxes=instances.pred_boxes, masks=instances.pred_masks, assigned_colors=colors, alpha=0.3)
 
         return instances, vis_output, t1-t0
     
